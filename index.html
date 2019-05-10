@@ -62,6 +62,63 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-node-js-垃圾回收" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/10/node-js-垃圾回收/" class="article-date">
+  <time datetime="2019-05-10T10:14:24.000Z" itemprop="datePublished">2019-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/10/node-js-垃圾回收/">node.js 垃圾回收</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是新生区和老生区"><a href="#什么是新生区和老生区" class="headerlink" title="什么是新生区和老生区?"></a>什么是新生区和老生区?</h2><blockquote>
+<p>新生区和老生区是两块内存区域，创建对象的时候，会将对象放到新生区，当新生区内存不够的时候，将对新生区进行垃圾回收，如果发现某个对象经过两次垃圾回收仍然被引用，则将该对象移入老生区。</p>
+</blockquote>
+<hr>
+<h2 id="新生区的垃圾回收"><a href="#新生区的垃圾回收" class="headerlink" title="新生区的垃圾回收"></a>新生区的垃圾回收</h2><ul>
+<li>新生区分为 from 和 to 两个区域，各占一半空间</li>
+<li>新分配的对象放到 from 区域</li>
+<li>from 容纳不下新对象时，触发垃圾回收</li>
+<li>清除 from 区域中中不再引用的对象</li>
+<li>将经过多次垃圾回收仍被引用的对象移动到老生区</li>
+<li>将仍然引用(只经理过当前的垃圾回收)的对象移动到to</li>
+<li>将对象移动到to的过程中，如果发现to的空间已经被占用了25%，则转而将该对象移动到老生区</li>
+<li>from 和 to 区域身份对调</li>
+</ul>
+<hr>
+<h2 id="老生区的垃圾回收"><a href="#老生区的垃圾回收" class="headerlink" title="老生区的垃圾回收"></a>老生区的垃圾回收</h2><ul>
+<li>当老生区的内存空间不足容纳新来的对象时，触发垃圾回收</li>
+<li>标记清除，清除老生区中不再引用的对象</li>
+<li>标记清除后，仍然无法容纳新来的对象，进行标记整理，移动对象，去除内存碎片</li>
+<li>标记整理因为移动大量对象，较耗时，node.js会进行增量标记整理，运行5ms标记整理，回去运行node.js程序，一段时间后再次运行5ms标记整理，直到完成</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/05/10/node-js-垃圾回收/" data-id="cjvhxut2b000043wi4hj6n0xv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-node-js-直接读取大文件的注意点" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/10/node-js-直接读取大文件的注意点/" class="article-date">
@@ -111,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/10/node-js-直接读取大文件的注意点/" data-id="cjvhwwty800007awi5a6lso6e" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/10/node-js-直接读取大文件的注意点/" data-id="cjvhxut2f000143wiu8on3szj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -183,7 +240,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/10/node-js-event-loop/" data-id="cjvhwwtyf00027awifnh7wwhc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/10/node-js-event-loop/" data-id="cjvhxut2h000243wi3q6vxu7w" class="article-share-link">Share</a>
       
       
     </footer>
@@ -235,7 +292,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/09/change/" data-id="cjvhwwtyd00017awizgnbq02r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/09/change/" data-id="cjvhxut2i000343wi6q2nfkro" class="article-share-link">Share</a>
       
       
     </footer>
@@ -274,6 +331,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/05/10/node-js-垃圾回收/">node.js 垃圾回收</a>
+          </li>
         
           <li>
             <a href="/2019/05/10/node-js-直接读取大文件的注意点/">node.js 直接读取大文件的注意点</a>
