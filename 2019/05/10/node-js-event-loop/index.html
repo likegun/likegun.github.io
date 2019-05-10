@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Q&#39;s blog">
 <meta property="og:description" content="event loop 是理解node.js异步非阻塞最重要的一个概念，此文用于记录我对其的理解。  什么是event loop?event loop 是一个处理回调的过程，这个过程分6个阶段，从前往后分别是timer、pending callbacks、idle, prepare、poll、check、close callbacks，每个阶段都有一个先进先出的回调队列，简而简单归纳:  开始阶段">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-10T09:57:01.794Z">
+<meta property="og:updated_time" content="2019-05-10T09:57:26.829Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="node.js event loop">
 <meta name="twitter:description" content="event loop 是理解node.js异步非阻塞最重要的一个概念，此文用于记录我对其的理解。  什么是event loop?event loop 是一个处理回调的过程，这个过程分6个阶段，从前往后分别是timer、pending callbacks、idle, prepare、poll、check、close callbacks，每个阶段都有一个先进先出的回调队列，简而简单归纳:  开始阶段">
@@ -111,6 +111,7 @@
 </blockquote>
 </li>
 </ul>
+<hr>
 <h2 id="特殊"><a href="#特殊" class="headerlink" title="特殊"></a>特殊</h2><ul>
 <li>在<em>poll</em>阶段，如果回调队列空了<ul>
 <li>如果调用过<code>setImmediate</code>，会立即进入<em>check</em>阶段</li>
