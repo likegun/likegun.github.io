@@ -5,15 +5,19 @@
   
 
   
-  <title>Q&#39;s blog</title>
+  <title>node.js event loop | Q&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Q&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="event loop 是理解node.js异步非阻塞最重要的一个概念，此文用于记录我对其的理解。  什么是event loop?event loop 是一个处理回调的过程，这个过程分6个阶段，从前往后分别是timer、pending callbacks、idle, prepare、poll、check、close callbacks，每个阶段都有一个先进先出的回调队列，简而言之，每个阶段开始后，进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node.js event loop">
+<meta property="og:url" content="http://yoursite.com/2019/05/10/node-js-event-loop/index.html">
 <meta property="og:site_name" content="Q&#39;s blog">
+<meta property="og:description" content="event loop 是理解node.js异步非阻塞最重要的一个概念，此文用于记录我对其的理解。  什么是event loop?event loop 是一个处理回调的过程，这个过程分6个阶段，从前往后分别是timer、pending callbacks、idle, prepare、poll、check、close callbacks，每个阶段都有一个先进先出的回调队列，简而言之，每个阶段开始后，进">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-10T09:53:49.028Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Q&#39;s blog">
+<meta name="twitter:title" content="node.js event loop">
+<meta name="twitter:description" content="event loop 是理解node.js异步非阻塞最重要的一个概念，此文用于记录我对其的理解。  什么是event loop?event loop 是一个处理回调的过程，这个过程分6个阶段，从前往后分别是timer、pending callbacks、idle, prepare、poll、check、close callbacks，每个阶段都有一个先进先出的回调队列，简而言之，每个阶段开始后，进">
   
     <link rel="alternate" href="/atom.xml" title="Q&#39;s blog" type="application/atom+xml">
   
@@ -60,9 +64,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-node-js-event-loop" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-node-js-event-loop" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/10/node-js-event-loop/" class="article-date">
   <time datetime="2019-05-10T09:34:45.000Z" itemprop="datePublished">2019-05-10</time>
@@ -75,8 +77,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/10/node-js-event-loop/">node.js event loop</a>
+    <h1 class="article-title" itemprop="name">
+      node.js event loop
     </h1>
   
 
@@ -122,63 +124,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-change" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/05/09/change/" class="article-date">
-  <time datetime="2019-05-09T08:25:23.000Z" itemprop="datePublished">2019-05-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/09/change/">change</a>
-    </h1>
+    <a href="/2019/05/09/change/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">change</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>博客记录 - hexo &amp; github pages</li>
-<li>思维导图 - 百度脑图</li>
-<li>计时器 - BillingTimer</li>
-<li>代码 &amp; 安排 - change 仓库</li>
-<li>回顾方式 - 暂定</li>
-<li>点列表 - notes</li>
-<li>流程<ul>
-<li>内容时间 schedule.md</li>
-<li>代码 || 思维导图 || 博客记录</li>
-<li>schedule.md 更新</li>
-<li>发布</li>
-<li>回顾助手同步一遍Question</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/09/change/" data-id="cjvhwm4fv0001c0wiwpngp7w2" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
-
 
 </section>
         
