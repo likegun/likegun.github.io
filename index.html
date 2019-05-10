@@ -86,7 +86,14 @@
       
         <p><em>event loop 是理解node.js异步非阻塞最重要的一个概念，此文用于记录我对其的理解。</em></p>
 <hr>
-<h2 id="什么是event-loop"><a href="#什么是event-loop" class="headerlink" title="什么是event loop?"></a>什么是event loop?</h2><p>event loop 是一个处理回调的过程，这个过程分6个阶段，从前往后分别是<em>timer</em>、<em>pending callbacks</em>、<em>idle, prepare</em>、<em>poll</em>、<em>check</em>、<em>close callbacks</em>，每个阶段都有一个先进先出的回调队列，简而言之，每个阶段开始后，进行该阶段相应的操作，调用队列中回调函数，进入下一阶段(特殊情况除外)，循环往复。</p>
+<h2 id="什么是event-loop"><a href="#什么是event-loop" class="headerlink" title="什么是event loop?"></a>什么是event loop?</h2><p>event loop 是一个处理回调的过程，这个过程分6个阶段，从前往后分别是<em>timer</em>、<em>pending callbacks</em>、<em>idle, prepare</em>、<em>poll</em>、<em>check</em>、<em>close callbacks</em>，每个阶段都有一个先进先出的回调队列，简而简单归纳:</p>
+<ul>
+<li>开始阶段</li>
+<li>进行该阶段相应的操作</li>
+<li>调用队列中回调函数</li>
+<li>回调函数队列为空或其他条件满足后，进入下一阶段(特殊情况除外)</li>
+<li>循环往复</li>
+</ul>
 <hr>
 <h2 id="event-loop每个阶段做什么-挑重要的节点说"><a href="#event-loop每个阶段做什么-挑重要的节点说" class="headerlink" title="event loop每个阶段做什么(挑重要的节点说)?"></a>event loop每个阶段做什么(挑重要的节点说)?</h2><ul>
 <li><em>timer</em><blockquote>
