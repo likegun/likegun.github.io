@@ -7,17 +7,17 @@
   
   <title>node.js 垃圾回收 | Q&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="什么是新生区和老生区? 新生区和老生区是两块内存区域，创建对象的时候，会将对象放到新生区，当新生区内存不够的时候，将对新生区进行垃圾回收，如果发现某个对象经过两次垃圾回收仍然被引用，则将该对象移入老生区。   新生区的垃圾回收 新生区分为 from 和 to 两个区域，各占一半空间 新分配的对象放到 from 区域 from 容纳不下新对象时，触发垃圾回收 清除 from 区域中中不再引用的对象">
+  <meta name="description" content="1. 什么是新生区和老生区? 新生区和老生区是两块内存区域，创建对象的时候，会将对象放到新生区，当新生区内存不够的时候，将对新生区进行垃圾回收，如果发现某个对象经过两次垃圾回收仍然被引用，则将该对象移入老生区。   2. 新生区的垃圾回收 新生区分为 from 和 to 两个区域，各占一半空间 新分配的对象放到 from 区域 from 容纳不下新对象时，触发垃圾回收 清除 from 区域中中不再">
 <meta property="og:type" content="article">
 <meta property="og:title" content="node.js 垃圾回收">
 <meta property="og:url" content="http://yoursite.com/2019/05/10/node-js-垃圾回收/index.html">
 <meta property="og:site_name" content="Q&#39;s blog">
-<meta property="og:description" content="什么是新生区和老生区? 新生区和老生区是两块内存区域，创建对象的时候，会将对象放到新生区，当新生区内存不够的时候，将对新生区进行垃圾回收，如果发现某个对象经过两次垃圾回收仍然被引用，则将该对象移入老生区。   新生区的垃圾回收 新生区分为 from 和 to 两个区域，各占一半空间 新分配的对象放到 from 区域 from 容纳不下新对象时，触发垃圾回收 清除 from 区域中中不再引用的对象">
+<meta property="og:description" content="1. 什么是新生区和老生区? 新生区和老生区是两块内存区域，创建对象的时候，会将对象放到新生区，当新生区内存不够的时候，将对新生区进行垃圾回收，如果发现某个对象经过两次垃圾回收仍然被引用，则将该对象移入老生区。   2. 新生区的垃圾回收 新生区分为 from 和 to 两个区域，各占一半空间 新分配的对象放到 from 区域 from 容纳不下新对象时，触发垃圾回收 清除 from 区域中中不再">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-10T10:29:05.637Z">
+<meta property="og:updated_time" content="2019-05-16T02:04:56.576Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="node.js 垃圾回收">
-<meta name="twitter:description" content="什么是新生区和老生区? 新生区和老生区是两块内存区域，创建对象的时候，会将对象放到新生区，当新生区内存不够的时候，将对新生区进行垃圾回收，如果发现某个对象经过两次垃圾回收仍然被引用，则将该对象移入老生区。   新生区的垃圾回收 新生区分为 from 和 to 两个区域，各占一半空间 新分配的对象放到 from 区域 from 容纳不下新对象时，触发垃圾回收 清除 from 区域中中不再引用的对象">
+<meta name="twitter:description" content="1. 什么是新生区和老生区? 新生区和老生区是两块内存区域，创建对象的时候，会将对象放到新生区，当新生区内存不够的时候，将对新生区进行垃圾回收，如果发现某个对象经过两次垃圾回收仍然被引用，则将该对象移入老生区。   2. 新生区的垃圾回收 新生区分为 from 和 to 两个区域，各占一半空间 新分配的对象放到 from 区域 from 容纳不下新对象时，触发垃圾回收 清除 from 区域中中不再">
   
     <link rel="alternate" href="/atom.xml" title="Q&#39;s blog" type="application/atom+xml">
   
@@ -86,11 +86,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="什么是新生区和老生区"><a href="#什么是新生区和老生区" class="headerlink" title="什么是新生区和老生区?"></a>什么是新生区和老生区?</h2><blockquote>
+        <h2 id="1-什么是新生区和老生区"><a href="#1-什么是新生区和老生区" class="headerlink" title="1. 什么是新生区和老生区?"></a>1. 什么是新生区和老生区?</h2><blockquote>
 <p>新生区和老生区是两块内存区域，创建对象的时候，会将对象放到新生区，当新生区内存不够的时候，将对新生区进行垃圾回收，如果发现某个对象经过两次垃圾回收仍然被引用，则将该对象移入老生区。</p>
 </blockquote>
 <hr>
-<h2 id="新生区的垃圾回收"><a href="#新生区的垃圾回收" class="headerlink" title="新生区的垃圾回收"></a>新生区的垃圾回收</h2><ul>
+<h2 id="2-新生区的垃圾回收"><a href="#2-新生区的垃圾回收" class="headerlink" title="2. 新生区的垃圾回收"></a>2. 新生区的垃圾回收</h2><ul>
 <li>新生区分为 from 和 to 两个区域，各占一半空间</li>
 <li>新分配的对象放到 from 区域</li>
 <li>from 容纳不下新对象时，触发垃圾回收</li>
@@ -101,7 +101,7 @@
 <li>from 和 to 区域身份对调</li>
 </ul>
 <hr>
-<h2 id="老生区的垃圾回收"><a href="#老生区的垃圾回收" class="headerlink" title="老生区的垃圾回收"></a>老生区的垃圾回收</h2><ul>
+<h2 id="3-老生区的垃圾回收"><a href="#3-老生区的垃圾回收" class="headerlink" title="3. 老生区的垃圾回收"></a>3. 老生区的垃圾回收</h2><ul>
 <li>当老生区的内存空间不足容纳新来的对象时，触发垃圾回收</li>
 <li>标记清除，清除老生区中不再引用的对象</li>
 <li>标记清除后，仍然无法容纳新来的对象，进行标记整理，移动对象，去除内存碎片</li>
