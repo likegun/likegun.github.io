@@ -62,6 +62,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-node-js-内存泄漏分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/17/node-js-内存泄漏分析/" class="article-date">
+  <time datetime="2019-05-17T09:18:42.000Z" itemprop="datePublished">2019-05-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/17/node-js-内存泄漏分析/">node.js-内存泄漏分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-process-memoryUsage-查看内存使用情况"><a href="#1-process-memoryUsage-查看内存使用情况" class="headerlink" title="1. process.memoryUsage() 查看内存使用情况"></a>1. <code>process.memoryUsage()</code> 查看内存使用情况</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//单位均为字节</span></span><br><span class="line">&#123; </span><br><span class="line">  rss: <span class="number">21544960</span>, <span class="comment">//常驻物理内存</span></span><br><span class="line">  heapTotal: <span class="number">7708672</span>, <span class="comment">// 分配的堆大小，存储对象内容</span></span><br><span class="line">  heapUsed: <span class="number">4437184</span>, <span class="comment">//已使用的堆大小</span></span><br><span class="line">  external: <span class="number">8224</span> <span class="comment">//堆外内存，由v8管理，buffer就存储在这</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;发生内存泄漏一般是创建的对象无法被垃圾回收，<em>heapUsed</em>持续增长最终导致内存消耗殆尽</p>
+<hr>
+<h2 id="2-分析内存泄漏"><a href="#2-分析内存泄漏" class="headerlink" title="2. 分析内存泄漏"></a>2. 分析内存泄漏</h2><p>&emsp;内存泄漏，内存中一定存在大量某种或某几种<em>类</em>的<em>实例</em>，分析内存泄漏，就是找出这些<em>类</em>，再分析这些<em>类</em>在代码中实例化的位置，进而分析内存泄漏的原因，举个例子:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dates = [];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">leak</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  dates.push(<span class="keyword">new</span> <span class="built_in">Date</span>())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;每次调用leak方法，会生成Date实例push到dates数组中，但dates数组从不删除元素，这就导致了内存泄漏。前头说了，我们要分析哪种<em>类</em>存在大量的<em>实例</em>，就需要工具让我们能查看内存存在的各种对象，这里使用<a href="https://www.npmjs.com/package/heapdump" target="_blank" rel="noopener">heapdump</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span></span><br><span class="line"><span class="keyword">const</span> heapdump = <span class="built_in">require</span>(<span class="string">'heapdump'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> dates = [];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">leak</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  dates.push(<span class="keyword">new</span> <span class="built_in">Date</span>())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> i = <span class="number">1e6</span>;</span><br><span class="line"><span class="keyword">while</span>(i--) leak();</span><br><span class="line"></span><br><span class="line">heapdump.writeSnapshot();</span><br></pre></td></tr></table></figure>
+<p>&emsp;<br><code>heapdump.writeSnapshot();</code>会在当前文件夹下生成一份内存快照文件，在chrome开发者工具中打开这份文件，可以看到<em>Date</em>的实例数异常高:</p>
+<p><img src="/images/loadprofile.png" alt><br><img src="/images/profile.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/05/17/node-js-内存泄漏分析/" data-id="cjvrwj67b00002ywi71e9pks2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-node-js-垃圾回收" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/10/node-js-垃圾回收/" class="article-date">
@@ -109,7 +154,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/10/node-js-垃圾回收/" data-id="cjvq08vc40003uowiteg201kj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/10/node-js-垃圾回收/" data-id="cjvrwj67n00042ywizmdktmb1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -165,7 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/10/node-js-直接读取大文件的注意点/" data-id="cjvq08vc10001uowiw41yl14a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/10/node-js-直接读取大文件的注意点/" data-id="cjvrwj67m00032ywiuiaw56oo" class="article-share-link">Share</a>
       
       
     </footer>
@@ -237,7 +282,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/10/node-js-event-loop/" data-id="cjvq08vc30002uowiyjnqrvam" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/10/node-js-event-loop/" data-id="cjvrwj67j00022ywi3li6zrkh" class="article-share-link">Share</a>
       
       
     </footer>
@@ -289,7 +334,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/09/change/" data-id="cjvq08vbx0000uowispno7zug" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/09/change/" data-id="cjvrwj67g00012ywipesuoe44" class="article-share-link">Share</a>
       
       
     </footer>
@@ -328,6 +373,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/05/17/node-js-内存泄漏分析/">node.js-内存泄漏分析</a>
+          </li>
         
           <li>
             <a href="/2019/05/10/node-js-垃圾回收/">node.js 垃圾回收</a>
